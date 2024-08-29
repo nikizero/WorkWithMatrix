@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define SIZE_Y 3
-#define SIZE_X 2
+#include <malloc.h>
                                                                     
-// Функция для вывода массива                                
+// Функция для вывода массива     
+
 static void PrintArray(int array_a[SIZE_Y][SIZE_X])                                     
 {
     printf("Массив:\n");
@@ -58,13 +57,15 @@ static void SumOfMatrix(int array_a[SIZE_Y][SIZE_X], int array_b[SIZE_Y][SIZE_X]
     {
         for (int j = 0; j < SIZE_X; j++)
         {
-            res[j][i] = array_a[j][i] + array_b[j][i];
+            res[i][j] = array_a[i][j] + array_b[i][j];
         }
     }
 }
 
 int main()
 {
+    int* size_xy = int* calloc(2, sizeof(int));
+    
     int array_a[SIZE_Y][SIZE_X] = {};
     int array_b[SIZE_Y][SIZE_X] = {};
     int res[SIZE_Y][SIZE_X] = {};
@@ -89,7 +90,7 @@ int main()
 
     SumOfMatrix(array_a, array_b, res);
 
-    printf("\nСумма массивов:\n");              //!!!!!!
+    printf("\nСумма массивов:\n");        
     PrintArray(res);
 
     return 0;
