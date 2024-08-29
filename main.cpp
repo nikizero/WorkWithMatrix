@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define SIZE_Y 5
-#define SIZE_X 4
-
-// Функция для вывода массива
-static void PrintArray(int array_a[SIZE_Y][SIZE_X])
+#define SIZE_Y 3
+#define SIZE_X 2
+                                                                    
+// Функция для вывода массива                                
+static void PrintArray(int array_a[SIZE_Y][SIZE_X])                                     
 {
     printf("Массив:\n");
     for (int i = 0; i < SIZE_Y; i++)
@@ -25,7 +25,7 @@ static int TransposeArray(int array_a[SIZE_Y][SIZE_X], int res[SIZE_Y][SIZE_X])
     if (SIZE_Y != SIZE_X)
     {
         printf ("\nImposible operation\n");
-        return 0;
+        return 1;
     }
     else
     {
@@ -37,7 +37,7 @@ static int TransposeArray(int array_a[SIZE_Y][SIZE_X], int res[SIZE_Y][SIZE_X])
             }
         }
     }
-    return 1;
+    return 0;
 }
 
 static void FillArray(int array_a[SIZE_Y][SIZE_X])
