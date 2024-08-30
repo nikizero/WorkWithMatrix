@@ -9,9 +9,9 @@ int random_number() {
 
 // Функция для создания и заполнения матрицы случайными числами
 int** create_matrix(int rows, int cols) {
-    int** matrix = (int**)malloc(rows * sizeof(int*));
+    int** matrix = (int**)calloc(rows, sizeof(int*));
     for (int i = 0; i < rows; i++) {
-        matrix[i] = (int*)malloc(cols * sizeof(int));
+        matrix[i] = (int*)calloc(cols, sizeof(int));
         for (int j = 0; j < cols; j++) {
             matrix[i][j] = random_number();
         }
@@ -31,9 +31,9 @@ void print_matrix(int** matrix, int rows, int cols) {
 
 // Функция для сложения двух матриц
 int** add_matrices(int** matrix1, int** matrix2, int rows, int cols) {
-    int** result = (int**)malloc(rows * sizeof(int*));
+    int** result = (int**)calloc(rows, sizeof(int*));
     for (int i = 0; i < rows; i++) {
-        result[i] = (int*)malloc(cols * sizeof(int));
+        result[i] = (int*)calloc(cols, sizeof(int));
         for (int j = 0; j < cols; j++) {
             result[i][j] = matrix1[i][j] + matrix2[i][j];
         }
@@ -43,9 +43,9 @@ int** add_matrices(int** matrix1, int** matrix2, int rows, int cols) {
 
 // Функция для транспонирования матрицы
 int** transpose_matrix(int** matrix, int size) {
-    int** transposed = (int**)malloc(size * sizeof(int*));
+    int** transposed = (int**)calloc(size, sizeof(int*));
     for (int i = 0; i < size; i++) {
-        transposed[i] = (int*)malloc(size * sizeof(int));
+        transposed[i] = (int*)calloc(size, sizeof(int));
         for (int j = 0; j < size; j++) {
             transposed[i][j] = matrix[j][i];
         }
