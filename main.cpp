@@ -2,107 +2,88 @@
 #include <stdlib.h>
 #include <time.h>
 
+static void   Print_matrix(int** node_s, int size);
+static int    random_number();
+static int ** Create(int size);
+static void   FillMatrix(int** node_s, int size);
+static void   Transpose(int** node_s, int size);
+
 // Функция для генерации случайного числа в диапазоне от 0 до 9
-int random_number() {
+static int random_number() {
     return rand() % 10;
 }
 
-// Функция для создания и заполнения матрицы случайными числами
-int** create_matrix(int rows, int cols) {
-    int** matrix = (int**)calloc(rows, sizeof(int*));
-    for (int i = 0; i < rows; i++) {
-        matrix[i] = (int*)calloc(cols, sizeof(int));
-        for (int j = 0; j < cols; j++) {
-            matrix[i][j] = random_number();
-        }
+int main()
+{
+    srand(time(NULL));
+    int size = 0;
+
+    printf("Введите размер квадратной матрицы: ");
+    scanf("%d", &size);
+
+    int ** node_a = Create(size);
+
+    printf("Исходная матрица:\n");
+    Print_matrix(node_a, size);
+
+    Transpose(node_a, size);
+
+    printf("Транспонированная матрица:\n");
+    Print_matrix(node_a, size);
+
+    // Освобождение памяти
+    for (int i = 0; i < size; i++) {
+        free(*(node_a + i));
     }
-    return matrix;
+    free(node_a);
+
+    return 0;
 }
 
-// Функция для вывода матрицы
-void print_matrix(int** matrix, int rows, int cols) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            printf("%d ", matrix[i][j]);
+static int ** Create(int size)
+{
+    int ** node_s = (int **) calloc(size, sizeof(int *));
+    for (int i = 0; i < size; i++)
+    {
+        *(node_s + i) = (int*) calloc(size, sizeof(int));
+    }
+    FillMatrix(node_s, size);
+    return node_s;
+}
+
+static void FillMatrix(int** node_s, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            *(*(node_s + i) + j) = random_number();
+        }
+    }
+}
+
+static void Print_matrix(int** node_s, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            printf("%d ", *(*(node_s + i) + j));
         }
         printf("\n");
     }
+    printf("\n");
 }
 
-// Функция для сложения двух матриц
-int** add_matrices(int** matrix1, int** matrix2, int rows, int cols) {
-    int** result = (int**)calloc(rows, sizeof(int*));
-    for (int i = 0; i < rows; i++) {
-        result[i] = (int*)calloc(cols, sizeof(int));
-        for (int j = 0; j < cols; j++) {
-            result[i][j] = matrix1[i][j] + matrix2[i][j];
+static void Transpose(int** node_s, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = i + 1; j < size; j++)
+        {
+            int temp = *(*(node_s + i) + j);
+            *(*(node_s + i) + j) = *(*(node_s + j) + i);
+            *(*(node_s + j) + i) = temp;
         }
     }
-    return result;
-}
-
-// Функция для транспонирования матрицы
-int** transpose_matrix(int** matrix, int size) {
-    int** transposed = (int**)calloc(size, sizeof(int*));
-    for (int i = 0; i < size; i++) {
-        transposed[i] = (int*)calloc(size, sizeof(int));
-        for (int j = 0; j < size; j++) {
-            transposed[i][j] = matrix[j][i];
-        }
-    }
-    return transposed;
-}
-
-// Функция для освобождения памяти
-void free_matrix(int** matrix, int rows) {
-    for (int i = 0; i < rows; i++) {
-        free(matrix[i]);
-    }
-    free(matrix);
-}
-
-int main() {
-    int rows, cols;
-
-    // Инициализация генератора случайных чисел
-    srand(time(NULL));
-
-    // Ввод размеров матриц
-    printf("Введите количество строк: ");
-    scanf("%d", &rows);
-    printf("Введите количество столбцов: ");
-    scanf("%d", &cols);
-
-    // Создание и заполнение матриц
-    int** matrix1 = create_matrix(rows, cols);
-    int** matrix2 = create_matrix(rows, cols);
-
-    // Вывод матриц
-    printf("Матрица 1:\n");
-    print_matrix(matrix1, rows, cols);
-
-    printf("Матрица 2:\n");
-    print_matrix(matrix2, rows, cols);
-
-    // Сложение матриц
-    int** sum_matrix = add_matrices(matrix1, matrix2, rows, cols);
-    printf("Результат сложения матриц:\n");
-    print_matrix(sum_matrix, rows, cols);
-
-    // Транспонирование, если матрица квадратная
-    if (rows == cols) {
-        int** transposed_matrix = transpose_matrix(matrix1, rows);
-        printf("Транспонированная Матрица 1:\n");
-        print_matrix(transposed_matrix, rows, cols);
-        free_matrix(transposed_matrix, rows);
-    } else {
-        printf("Матрица не является квадратной, транспонирование невозможно.\n");
-    }
-
-    // Освобождение памяти
-    free_matrix(matrix1, rows);
-    free_matrix(matrix2, rows);
-    free_matrix(sum_matrix, rows);
-
-    return 0;
 }
